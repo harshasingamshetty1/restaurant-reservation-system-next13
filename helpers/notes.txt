@@ -1,0 +1,52 @@
+git commit --amend --author="harshasingamshetty1 <harshasingamshetty1@gmail.com>"
+
+====================================================================================================
+Link tag, is used for client side navigation. 
+i.e if we use anchor tag, all the resources will be reloaded (its like a reload of page).
+but when we use Link tag to navigate to pages within, then it only loads whatever is essential, all the other components will not be reloaded.
+
+=================================SSR => Server Side Rendering=================================
+
+helps us to have small bundles sent to client thus making it way faster.
+and, helpful for SEO, as the rendered markup will be given to client and therfore, the search engine bots can easily preview the website, unlike when we use client side rendering, bocz it takes time for the client (browser) to render the js code.
+more secure, as the apis can be stored on the server.
+
+=================================LIMITATIONS of SSR ==================================
+
+cannot listen the browser events like, onClick, on resize etc. bcoz, we are rendering everything on server.
+
+Cannot acess browser apis, such as timeout, (local storage) etc.
+
+Cannot maintain state.
+
+Cannot use effects.
+
+So, when u must have to use, any of the above, let say a button such that we can click...then create a component for that button and 'use client' directive so that, that particular comp acts exacltly similar to any react comp, which means client side rendering will happen.
+
+
+=================================Caching in Next ==================================
+Speed of retrieval of data:
+Memory > File System > Network.
+
+As network is always slower, Next comes with an automatic caching for the fetch() function. But we can customize it for data which changes very frequently.
+
+const res = await fetch("https://jsonplaceholder.typicode.com/users" , {cache:'no-store'});
+
+also, we can set the data valid only for certain time like this.
+
+const res = await fetch("https://jsonplaceholder.typicode.com/users" , {next : {revalidate: 10}});
+
+
+Remeber that, without the cache:nostore option, next always tries to cache the response used in fetch. therefore considers that particular page as a static page instead of dynamic (which is actually correct.)
+
+
+Types of rendering =>1. Client side & 2. Server Side Rendering
+
+and again within SSR => Static Rendering (at build time) and
+                        Dynamic Rendering (at Run time)
+
+Therefore, for any page, lets say, we are fetching current time from an api, and if we donot give the cache no store option, it considers the page as static and hence, in the production build, the time does not update on every reload, instead it picks up from the cache.
+
+To avoid this, we must use the cache: no-store, then the page is considered as Dynmaic and hence, works as expected.
+
+
