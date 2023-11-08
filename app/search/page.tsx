@@ -1,6 +1,6 @@
 import React from "react";
 
-const searchPage = () => {
+const SearchPage = () => {
   return (
     <main className="bg-gray-100 min-h-screen w-screen text-black">
       <main className="max-w-screen-2xl m-auto bg-white">
@@ -100,4 +100,4 @@ const searchPage = () => {
   );
 };
 
-export default searchPage;
+export default SearchPage;
