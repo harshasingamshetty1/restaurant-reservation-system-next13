@@ -1,10 +1,31 @@
 git commit --amend --author="harshasingamshetty1 <harshasingamshetty1@gmail.com>"
 
-====================================================================================================
+======================================================================
+
+by default, eveery page has props sent by default which contains both the params and searchParams
+
+=================================== Prisma ===================================
+
+npx prisma init => will initialize the default schmea of db.
+
+npx prisma db push => will make the schema changes sync
+
+===================================Layout.tsx=======================================================
+
+In any route, we can define Layout.tsx file, which is a special file just like page.tsx file.
+So, when we define a Layout, it applies for all its children paths. 
+So very useful when we want to have a common layout just for lets say,
+restuarant page and restuarant/menu page.
+
+=============================================Link, useRouter() hook=======================================================
+
 Link tag, is used for client side navigation. 
 i.e if we use anchor tag, all the resources will be reloaded (its like a reload of page).
 but when we use Link tag to navigate to pages within, then it only loads whatever is essential, all the other components will not be reloaded.
 
+
+useRouter() hook, is best suited when we want to programatically navigate in the application.
+i.e maybe based on some condns etc.
 =================================SSR => Server Side Rendering=================================
 
 helps us to have small bundles sent to client thus making it way faster.

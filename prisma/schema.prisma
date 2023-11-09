@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PRICE {
+  CHEAP
+  REGULAR
+  EXPENSIVE
+}
+
+model Restaurant {
+  id          Int       @id @default(autoincrement())
+  name        String
+  main_image  String
+  images      String[]
+  description String
+  open_time   String
+  close_time  String
+  // This is just the type of prices, the restaurant gonna have.(range of price)
+  price       PRICE
+  //To just have a unique name. As each res may have multuple branches
+  slug        String    @unique
+  items       Item[]
+  location_id Int
+  //This means, the field location_id, references the id field of the location model 
+  // bcoz, A location can have multiple restaurants, but for any specific restaurant can be only at one location. THough it might have branches, but those will have different restaurant id
+  //Restaurant to Location is a many to 1 Relation
+  // we always define relation on the "many" side, which is Restaurant in this case
+  location    Location  @relation(fields: [location_id], references: [id])
+  cuisine_id  Int
+  cuisine     Cuisine   @relation(fields: [cuisine_id], references: [id])
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+}
+
+model Item {
+  id            Int        @id @default(autoincrement())
+  name          String
+  price         String
+  description   String
+  restaurant_id Int
+  //This means, the field restaurant_id, references the id field of the restuarant model 
+  restaurant    Restaurant @relation(fields: [restaurant_id], references: [id])
+  created_at    DateTime   @default(now())
+  updated_at    DateTime   @updatedAt
+}
+
+model Location {
+  id          Int          @id @default(autoincrement())
+  name        String
+  restaurants Restaurant[]
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
+}
+
+model Cuisine {
+  id          Int          @id @default(autoincrement())
+  name        String
+  restaurants Restaurant[]
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
+}
