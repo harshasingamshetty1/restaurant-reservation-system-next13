@@ -2,7 +2,7 @@ git commit --amend --author="harshasingamshetty1 <harshasingamshetty1@gmail.com>
 
 ======================================================================
 
-by default, eveery page has props sent by default which contains both the params and searchParams
+by default, eveery page.tsx, layout.tsx files have props sent by default which contains both the params and searchParams
 
 =================================== Prisma ===================================
 
@@ -10,6 +10,7 @@ npx prisma init => will initialize the default schmea of db.
 
 npx prisma db push => will make the schema changes sync
 
+// here, from restaurant table, we will be able to acccess all the related tables (items,location, cuisine) without having to do multiple query calls, prisma handles the joining of tables for us.
 ===================================Layout.tsx=======================================================
 
 In any route, we can define Layout.tsx file, which is a special file just like page.tsx file.
