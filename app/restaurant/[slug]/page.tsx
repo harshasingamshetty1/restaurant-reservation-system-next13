@@ -46,7 +46,7 @@ const RestaurantDetailsPage = async (props: any) => {
         <Title name={restaurant.name} />
         <Rating />
         <Description description={restaurant.description} />
-        <Images />
+        <Images images={restaurant.images} />
         <Reviews />
       </div>
       <ReservationCard />
