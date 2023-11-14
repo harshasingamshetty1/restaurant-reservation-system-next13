@@ -17,7 +17,7 @@ enum PRICE {
 }
 
 model Restaurant {
-  id          Int       @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   name        String
   main_image  String
   images      String[]
@@ -27,18 +27,19 @@ model Restaurant {
   // This is just the type of prices, the restaurant gonna have.(range of price)
   price       PRICE
   //To just have a unique name. As each res may have multuple branches
-  slug        String    @unique
+  slug        String   @unique
   items       Item[]
   location_id Int
   //This means, the field location_id, references the id field of the location model 
   // bcoz, A location can have multiple restaurants, but for any specific restaurant can be only at one location. THough it might have branches, but those will have different restaurant id
   //Restaurant to Location is a many to 1 Relation
   // we always define relation on the "many" side, which is Restaurant in this case
-  location    Location  @relation(fields: [location_id], references: [id])
+  location    Location @relation(fields: [location_id], references: [id])
   cuisine_id  Int
-  cuisine     Cuisine   @relation(fields: [cuisine_id], references: [id])
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt
+  cuisine     Cuisine  @relation(fields: [cuisine_id], references: [id])
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  reviews      Review[]
 }
 
 model Item {
@@ -67,4 +68,29 @@ model Cuisine {
   restaurants Restaurant[]
   created_at  DateTime     @default(now())
   updated_at  DateTime     @updatedAt
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  first_name String
+  last_name  String
+  city       String
+  password   String
+  email      String   @unique
+  phone      String
+  reviews    Review[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Review {
+  id            Int        @id @default(autoincrement())
+  first_name    String
+  last_name     String
+  text          String
+  rating        Float
+  restaurant_id Int
+  restaurant    Restaurant @relation(fields: [restaurant_id], references: [id])
+  user_id       Int
+  user          User       @relation(fields: [user_id], references: [id])
 }

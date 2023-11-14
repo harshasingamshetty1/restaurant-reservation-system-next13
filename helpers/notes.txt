@@ -4,6 +4,19 @@ git commit --amend --author="harshasingamshetty1 <harshasingamshetty1@gmail.com>
 
 by default, eveery page.tsx, layout.tsx files have props sent by default which contains both the params and searchParams
 
+Loading.tsx defined in the root of the folder will be the default loading page for all the pages within, so if we want to override, we need to define separate loading.tsx files for each path.
+
+not-found.tsx, is a special file, to render when a page is not found.
+we can use the notFound() from the next/navigation to get to this page.
+
+both the not-found and error.tsx files must always be a client components.
+error.tsx is also a special file, for rendering when an error occurs (other than the not found).
+Also by default an Error props is passed to the error.tsx so that, we can render the error details in the component
+
+
+Its best to use, <Image/> comp from next/image instead of regular html <img/> bcoz, its way more optimized for next 
+
+
 =================================== Prisma ===================================
 
 npx prisma init => will initialize the default schmea of db.
