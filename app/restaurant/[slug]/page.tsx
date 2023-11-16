@@ -7,6 +7,8 @@ import Images from "./components/Images";
 import Reviews from "./components/Reviews";
 import ReservationCard from "./components/ReservationCard";
 import prisma from "../../db";
+import { Review } from "@prisma/client";
+import { notFound } from "next/navigation";
 
 interface Restaurant {
   id: number;
@@ -14,6 +16,7 @@ interface Restaurant {
   slug: string;
   description: string;
   images: string[];
+  reviews: Review[];
 }
 const fetchRestaurantBySlug = async (slug: string): Promise<Restaurant> => {
   const restaurant = await prisma.restaurant.findUnique({
@@ -24,30 +27,26 @@ const fetchRestaurantBySlug = async (slug: string): Promise<Restaurant> => {
       description: true,
       images: true,
       name: true,
+      reviews: true,
     },
   });
 
-  if (!restaurant) throw new Error();
+  if (!restaurant) notFound();
   return restaurant;
 };
 const RestaurantDetailsPage = async (props: any) => {
-  console.log("🚀 ~ file: page.tsx:34 ~ RestaurantDetailsPage ~ props:", props);
   //by default, eveery page has props sent by default which contains both the params and searchParams
   const restaurant = await fetchRestaurantBySlug(props.params.slug);
-  console.log(
-    "🚀 ~ file: page.tsx:17 ~ RestaurantDetailsPage ~ restaurant:",
-    restaurant
-  );
 
   return (
     <>
       <div className="bg-white w-[70%] rounded p-3 shadow">
         <RestaurantNavBar slug={restaurant.slug} />
         <Title name={restaurant.name} />
-        <Rating />
+        <Rating reviews={restaurant.reviews} />
         <Description description={restaurant.description} />
         <Images images={restaurant.images} />
-        <Reviews />
+        <Reviews reviews={restaurant.reviews} />
       </div>
       <ReservationCard />
     </>
