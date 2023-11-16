@@ -9,7 +9,7 @@ function SearchBar() {
   return (
     <div className="text-left text-lg py-3 m-auto flex justify-center">
       <input
-        className="rounded  mr-3 p-2 w-[450px]"
+        className="rounded  mr-3 p-2 w-[450px] bg-white"
         type="text"
         placeholder="State, city or town"
         value={location}
