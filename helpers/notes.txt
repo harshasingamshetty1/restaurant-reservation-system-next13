@@ -2,6 +2,17 @@ git commit --amend --author="harshasingamshetty1 <harshasingamshetty1@gmail.com>
 
 ======================================================================
 
+Restaurant structure in our case.
+1. Any restaurant can have table sizes of either 2 or 4
+2. We can join multiple tables together to form bigger tables.
+
+
+we used, react-datepicker for date comp, and must not forget to add the date-picker styles to the Layout, or else the comp will not be good.
+
+just learned about a cloud platform to store file called Cloudinary, which is way better than s3, while using nextJs, bcoz it comes with nextjs-cloudinary package, which provides with beautiful react UI components to upload any file directly from UI to our cloudinary account.
+
+======================================================================
+
 by default, eveery page.tsx, layout.tsx files have props sent by default which contains both the params and searchParams
 
 Loading.tsx defined in the root of the folder will be the default loading page for all the pages within, so if we want to override, we need to define separate loading.tsx files for each path.

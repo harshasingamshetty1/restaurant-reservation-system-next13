@@ -13,7 +13,7 @@ const Reviews = ({ reviews }: { reviews: Review[] }) => {
       <div>
         {reviews.map((review) => {
           return (
-            <div className="border-b pb-7 mb-7">
+            <div className="border-b pb-7 mb-7" key={review.id}>
               <div className="flex">
                 <div className="w-1/6 flex flex-col items-center">
                   <div className="rounded-full bg-blue-400 w-16 h-16 flex items-center justify-center">
