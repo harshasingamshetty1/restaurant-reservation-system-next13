@@ -11,6 +11,11 @@ we used, react-datepicker for date comp, and must not forget to add the date-pic
 
 just learned about a cloud platform to store file called Cloudinary, which is way better than s3, while using nextJs, bcoz it comes with nextjs-cloudinary package, which provides with beautiful react UI components to upload any file directly from UI to our cloudinary account.
 
+IN our schema, we have a booking and Table dbs.
+The relation btw these 2 will be many 2 many relation. bcoz, 
+A booking can involve multiple tables, if the partySize > 4 and 
+A table can have multiple bookings in a day, but at different times. Therefore many:many relationship.
+As we know that best way to deal with the many:many rln is to create a new table called booking_table, which contains foreign keys to both tables.
 ======================================================================
 
 by default, eveery page.tsx, layout.tsx files have props sent by default which contains both the params and searchParams
