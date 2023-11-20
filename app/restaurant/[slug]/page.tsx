@@ -17,6 +17,8 @@ interface Restaurant {
   description: string;
   images: string[];
   reviews: Review[];
+  open_time: string;
+  close_time: string;
 }
 const fetchRestaurantBySlug = async (slug: string): Promise<Restaurant> => {
   const restaurant = await prisma.restaurant.findUnique({
@@ -28,6 +30,8 @@ const fetchRestaurantBySlug = async (slug: string): Promise<Restaurant> => {
       images: true,
       name: true,
       reviews: true,
+      open_time: true,
+      close_time: true,
     },
   });
 
@@ -48,7 +52,10 @@ const RestaurantDetailsPage = async (props: any) => {
         <Images images={restaurant.images} />
         <Reviews reviews={restaurant.reviews} />
       </div>
-      <ReservationCard />
+      <ReservationCard
+        openTime={restaurant.open_time}
+        closeTime={restaurant.close_time}
+      />
     </>
   );
 };
