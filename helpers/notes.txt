@@ -88,7 +88,7 @@ also, we can set the data valid only for certain time like this.
 const res = await fetch("https://jsonplaceholder.typicode.com/users" , {next : {revalidate: 10}});
 
 
-Remeber that, without the cache:nostore option, next always tries to cache the response used in fetch. therefore considers that particular page as a static page instead of dynamic (which is actually correct.)
+Remeber that, without the cache:nostore option, next always tries to cache the response used in fetch. therefore considers that particular page as a static page instead of dynamic (which could  actually be the case.)
 
 
 Types of rendering =>1. Client side & 2. Server Side Rendering
