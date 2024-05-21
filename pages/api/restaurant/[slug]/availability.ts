@@ -54,7 +54,67 @@ export default async function handler(
         return { ...previousValue, [currentValue.table_id]: true };
       }, {});
   });
+  // fetch all tables at restaurs
+  const restaurant = await prisma.restaurant.findUnique({
+    where: { slug },
+    select: {
+      tables: true,
+      open_time: true,
+      close_time: true,
+    },
+  });
+  if (!restaurant)
+    return res.status(400).json({ error: "Invalid data provided" });
 
-  return res.json(currentBookingsObj);
+  const tables = restaurant.tables;
+  const searchTimeWithTables = searchTimes.map((searchTime) => {
+    return {
+      date: new Date(`${day}T${searchTime}`),
+      time: searchTime,
+      tables,
+    };
+  });
+
+  /* 
+    here we are filtering the tables, based on whether there is a booking at that time or not.
+    If there is a booking for that table at that time, remove it from the list.
+*/
+  searchTimeWithTables.forEach((searchTimeWithTable) => {
+    if (searchTimeWithTable.date.toISOString() in currentBookingsObj) {
+      searchTimeWithTable.tables = searchTimeWithTable.tables.filter((t) => {
+        return !(
+          t.id in currentBookingsObj[searchTimeWithTable.date.toISOString()]
+        );
+      });
+    }
+  });
+  /* 
+    finally lets return the possible searchTimes and whether the restraunt can accommodate the,
+    partySize or not.
+    and also, check whether the restraunt is open or not, for those search times
+  */
+
+  const availabilities = searchTimeWithTables
+    .map((st) => {
+      const availableSize = st.tables.reduce((sum, table) => {
+        return sum + table.seats;
+      }, 0);
+      return {
+        time: st.time,
+        available: parseInt(partySize) <= availableSize,
+      };
+    })
+    .filter((availability) => {
+      const time = new Date(`${day}T${availability.time}`);
+      const openTime = new Date(`${day}T${restaurant.open_time}`);
+      const closeTime = new Date(`${day}T${restaurant.close_time}`);
+      return time >= openTime && time <= closeTime;
+    });
+  return res.json({
+    currentBookingsObj,
+    // tables: restaurant.tables,
+    // searchTimeWithTables,
+    availabilities,
+  });
 }
-//http://localhost:3000/api/restaurant/vivaan-fine-indian-cuisi-ottawa/availability?time=16:30:00.000Z&day=2023-12-24&partySize=3
+//http://localhost:3000/api/restaurant/vivaan-fine-indian-cuisine-ottawa/availability?time=16:30:00.000Z&day=2023-12-24&partySize=8

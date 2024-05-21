@@ -53,6 +53,7 @@ const RestaurantDetailsPage = async (props: any) => {
         <Reviews reviews={restaurant.reviews} />
       </div>
       <ReservationCard
+        slug={restaurant.slug}
         openTime={restaurant.open_time}
         closeTime={restaurant.close_time}
       />
