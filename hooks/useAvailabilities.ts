@@ -19,6 +19,7 @@ export default function useAvailabilities() {
     day: string;
     time: string;
   }) => {
+    console.log("🚀 ~ useAvailabilities ~ prtSize:", partySize);
     setLoading(true);
 
     try {
