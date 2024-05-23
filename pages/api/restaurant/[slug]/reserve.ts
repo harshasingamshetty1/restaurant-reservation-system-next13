@@ -64,7 +64,11 @@ export default async function handler(
         errorMessage: "Invalid data provided",
       });
     }
-
+    /* 
+      here, we have to check all this logic again, bcoz
+      when there is huge traffic, there might be bookings happened ,
+       even after clicking user has searched for a time and still waited for a while to reserve the table.
+    */
     const searchTimeWithTables = searchTimesWithTables.find((t) => {
       return t.date.toISOString() === new Date(`${day}T${time}`).toISOString();
     });
@@ -91,27 +95,37 @@ export default async function handler(
       }
     });
 
-    const tablesToBooks: number[] = [];
+    const tablesToBook: number[] = [];
     let seatsRemaining = parseInt(partySize);
 
     while (seatsRemaining > 0) {
       if (seatsRemaining >= 3) {
         if (tablesCount[4].length) {
-          tablesToBooks.push(tablesCount[4][0]);
+          /* 
+            firsting pushing the table Id of the 4 size table, which is the first one in the array.
+            then remove the 1st element we just pushed into tablesToBook.
+            then decrease the seatsRemaining 
+          */
+          tablesToBook.push(tablesCount[4][0]);
           tablesCount[4].shift();
           seatsRemaining = seatsRemaining - 4;
         } else {
-          tablesToBooks.push(tablesCount[2][0]);
+          tablesToBook.push(tablesCount[2][0]);
           tablesCount[2].shift();
           seatsRemaining = seatsRemaining - 2;
         }
       } else {
         if (tablesCount[2].length) {
-          tablesToBooks.push(tablesCount[2][0]);
+          tablesToBook.push(tablesCount[2][0]);
           tablesCount[2].shift();
           seatsRemaining = seatsRemaining - 2;
         } else {
-          tablesToBooks.push(tablesCount[4][0]);
+          /* 
+            this case is for, when the party size is <= 2,
+            but we dont have any 2 size table available.
+            so, we have to use 4 size table for the party size.
+          */
+          tablesToBook.push(tablesCount[4][0]);
           tablesCount[4].shift();
           seatsRemaining = seatsRemaining - 4;
         }
@@ -132,7 +146,7 @@ export default async function handler(
       },
     });
 
-    const bookingsOnTablesData = tablesToBooks.map((table_id) => {
+    const bookingsOnTablesData = tablesToBook.map((table_id) => {
       return {
         table_id,
         booking_id: booking.id,
