@@ -12,13 +12,14 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
+  await prisma.restaurant.deleteMany();
   await prisma.table.deleteMany();
+  await prisma.user.deleteMany();
   await prisma.review.deleteMany();
   await prisma.item.deleteMany();
-  await prisma.restaurant.deleteMany();
+
   await prisma.location.deleteMany();
   await prisma.cuisine.deleteMany();
-  await prisma.user.deleteMany();
 
   await prisma.location.createMany({
     data: [{ name: "ottawa" }, { name: "toronto" }, { name: "niagara" }],
@@ -1303,6 +1304,35 @@ export default async function handler(
         restaurant_id: utsavId,
         user_id: userCassidy.id,
       },
+    ],
+  });
+
+  const createTablesData = (restaurantId: any, seatsArray: any) => {
+    return seatsArray.map((seats: any) => ({
+      restaurant_id: restaurantId,
+      seats,
+    }));
+  };
+
+  await prisma.table.createMany({
+    data: [
+      ...createTablesData(vivaanId, [4, 4, 2]),
+      ...createTablesData(RamaKrishnaId, [4, 4, 2]),
+      ...createTablesData(coconutLagoonId, [4, 4, 2]),
+      ...createTablesData(lastTrainToDelhiId, [4, 4, 2]),
+      ...createTablesData(adrakYorkvilleId, [4, 4, 2]),
+      ...createTablesData(curryishTavernId, [4, 4, 2]),
+      ...createTablesData(utsavId, [4, 4, 2]),
+      ...createTablesData(pukkaId, [4, 4, 2]),
+      ...createTablesData(kamasutraIndianId, [4, 4, 2]),
+      ...createTablesData(eldoradoTacoId, [4, 4, 2]),
+      ...createTablesData(laBartolaId, [4, 4, 2]),
+      ...createTablesData(elCatrinId, [4, 4, 2]),
+      ...createTablesData(mariachisId, [4, 4, 2]),
+      ...createTablesData(canoRestaurantId, [4, 4, 2]),
+      ...createTablesData(bluRistoranteId, [4, 4, 2]),
+      ...createTablesData(stelvioId, [4, 4, 2]),
+      ...createTablesData(sofiaId, [4, 4, 2]),
     ],
   });
 
