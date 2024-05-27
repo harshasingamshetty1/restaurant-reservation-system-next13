@@ -4,7 +4,6 @@ import Form from "./components/Form";
 import prisma from "../../db";
 import { Restaurant } from "@prisma/client";
 import { notFound } from "next/navigation";
-import { log } from "console";
 
 const fetchRestaurantBySlug = async (slug: string): Promise<Restaurant> => {
   const restaurant = await prisma.restaurant.findUnique({
@@ -27,9 +26,10 @@ const ReservationPage = async ({
     partySize: string;
   };
 }) => {
+  console.log("🚀 ~ searchParams:", searchParams);
   console.log("params", params);
-  const [day, time] = searchParams.date.split("T");
-  const restaurant = await fetchRestaurantBySlug(params.slug);
+  const [day, time] = searchParams?.date?.split("T");
+  const restaurant = await fetchRestaurantBySlug(params?.slug);
   return (
     <div className="border-t h-screen">
       <div className="py-9 w-3/5 m-auto">
